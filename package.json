@@ -1,14 +1,16 @@
 {
-  "name": "gridsome-plugin-feed",
+  "name": "@microflash/gridsome-plugin-feed",
   "version": "1.0.3",
-  "description": "Generate RSS/Atom/JSON feeds from generated Gridsome content.",
+  "description": "Gridsome plugin to generate RSS, Atom or JSON feeds",
   "main": "index.js",
-  "license": "ISC",
-  "homepage": "https://github.com/onecrayon/gridsome-plugin-feed#readme",
-  "repository": "https://github.com/onecrayon/gridsome-plugin-feed",
+  "license": "MIT",
+  "homepage": "hhttps://github.com/Microflash/gridsome-plugin-feed#readme",
+  "repository": "https://github.com/Microflash/gridsome-plugin-feed",
   "keywords": [
     "gridsome",
-    "gridsome-plugin"
+    "gridsome-plugin",
+    "rss",
+    "atom"
   ],
   "dependencies": {
     "feed": "^4.1.0",
