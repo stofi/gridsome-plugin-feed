@@ -1,30 +1,37 @@
-# gridsome-plugin-feed
+# @microflash/gridsome-plugin-feed
 
-Generate an RSS, Atom, and/or JSON feed for your Gridsome site.
+Gridsome plugin to generate RSS, Atom or JSON feeds
 
 ## Install
 
-- `yarn add gridsome-plugin-feed`
-- `npm install gridsome-plugin-feed`
+```sh
+yarn add @microflash/gridsome-plugin-feed
+npm install @microflash/gridsome-plugin-feed
+```
 
-## Example
+## Usage
 
 ```js
 module.exports = {
   plugins: [
     {
-      use: 'gridsome-plugin-feed',
+      use: '@microflash/gridsome-plugin-feed',
       options: {
-        // Required: array of `GraphQL` type names you wish to include
-        contentTypes: ['BlogPost', 'NewsPost'],
-        // Optional: any properties you wish to set for `Feed()` constructor
-        // See https://www.npmjs.com/package/feed#example for available properties
+
+        // (required) Provide GraphQL collection types
+        contentTypes: ['BlogPost'],
+
+        // (optional) Properties used by feed API
+        // See https://github.com/jpmonette/feed#example for all options
         feedOptions: {
-          title: 'My Awesome Blog Feed',
-          description: 'Best blog feed evah.'
+          title: 'My blog',
+          description: 'My Personal blog on books, cookies and kittens'
         },
-        // === All options after this point show their default values ===
-        // Optional; opt into which feeds you wish to generate, and set their output path
+
+        // Available options with their default values
+
+        // (optional) Options for feed formats
+        // RSS is enabled by default
         rss: {
           enabled: true,
           output: '/feed.xml'
@@ -37,23 +44,27 @@ module.exports = {
           enabled: false,
           output: '/feed.json'
         },
-        // Optional: the maximum number of items to include in your feed
+
+        // (optional) number of items to include in a feed
         maxItems: 25,
-        // Optional: an array of properties passed to `Feed.addItem()` that will be parsed for
-        // URLs in HTML (ensures that URLs are full `http` URLs rather than site-relative).
-        // To disable this functionality, set to `null`.
-        htmlFields: ['description', 'content'],
-        // Optional: if you wish to enforce trailing slashes for site URLs
+
+        // (optional) an array of properties to be parsed as HTML
+        // Converts relative URLs to absolute URLs
+        // You can disable this by omitting the option
+        htmlFields: ['content'],
+
+        // (optional) appends a trailing slash to the URLs
         enforceTrailingSlashes: false,
-        // Optional: a method that accepts a node and returns true (include) or false (exclude)
-        // Example: only past-dated nodes: `filterNodes: (node) => node.date <= new Date()`
+
+        // (optional) a function to filter out the nodes
+        // e.g., filter out all outdated posts, filterNodes: (node) => !!node.outdated
         filterNodes: (node) => true,
-        // Optional: a method that accepts a node and returns an object for `Feed.addItem()`
-        // See https://www.npmjs.com/package/feed#example for available properties
-        // NOTE: `date` field MUST be a Javascript `Date` object
+
+        // (optional) sets the properties on each feed item
+        // See https://github.com/jpmonette/feed#example for all options
         nodeToFeedItem: (node) => ({
           title: node.title,
-          date: node.date || node.fields.date,
+          date: node.date,
           content: node.content
         })
       }
@@ -61,3 +72,7 @@ module.exports = {
   ]
 }
 ```
+
+## Credits
+
+[@onecrayon](https://github.com/onecrayon/gridsome-plugin-feed) for implementing the [original plugin](https://github.com/onecrayon/gridsome-plugin-feed)

@@ -4,14 +4,14 @@ const fs = require('fs-extra')
 const Feed = require('feed').Feed
 const moment = require('moment')
 
-function urlWithBase (path, base, enforceTrailingSlashes) {
+const urlWithBase = (path, base, enforceTrailingSlashes) => {
 	if (enforceTrailingSlashes && !path.endsWith('/') && !/\.[a-z]{1,4}$/i.test(path)) {
 		path = path + '/'
 	}
 	return new url.URL(path, base).href
 }
 
-function convertToSiteUrls (html, baseUrl, enforceTrailingSlashes) {
+const convertToSiteUrls = (html, baseUrl, enforceTrailingSlashes) => {
 	// Currently playing it conservative and only modifying things that are explicitly relative URLs
 	const relativeRefs = /(href|src)=("|')((?=\.{1,2}\/|\/).+?)\2/gi
 	return html.replace(relativeRefs, (_, attribute, quote, relUrl) => {
@@ -19,7 +19,7 @@ function convertToSiteUrls (html, baseUrl, enforceTrailingSlashes) {
 	})
 }
 
-function ensureExtension (path, extension) {
+const ensureExtension = (path, extension) => {
 	if (path.endsWith(extension)) return path
 	if (path.endsWith('/')) {
 		return `${path.substring(0, path.length - 1)}${extension}`
@@ -27,13 +27,14 @@ function ensureExtension (path, extension) {
 	return `${path}${extension}`
 }
 
-module.exports = function (api, options) {
+module.exports = (api, options) => {
 	api.afterBuild(({ config }) => {
 		if (!config.siteUrl) {
-			throw new Error('Feed plugin is missing required global siteUrl config.')
+			throw new Error('Missing required field `siteUrl` in gridsome.config.js')
 		}
+
 		if (!options.contentTypes || !options.contentTypes.length) {
-			throw new Error('Feed plugin is missing required `options.contentTypes` setting.')
+			throw new Error('Missing required field `options.contentTypes` for `@microflash/gridsome-plugin-feed` plugin in gridsome.config.js')
 		}
 
 		const store = api._app.store
@@ -48,21 +49,27 @@ module.exports = function (api, options) {
 			...options.feedOptions,
 			feedLinks: {}
 		}
+
 		const rssOutput = options.rss.enabled ? ensureExtension(options.rss.output, '.xml') : null
 		const atomOutput = options.atom.enabled ? ensureExtension(options.atom.output, '.atom') : null
 		const jsonOutput = options.json.enabled ? ensureExtension(options.json.output, '.json') : null
+
 		if (rssOutput) {
 			feedOptions.feedLinks.rss = urlWithBase(pathPrefix + rssOutput, siteUrl)
 		}
+
 		if (atomOutput) {
 			feedOptions.feedLinks.atom = urlWithBase(pathPrefix + atomOutput, siteUrl)
 		}
+
 		if (jsonOutput) {
 			feedOptions.feedLinks.json = urlWithBase(pathPrefix + jsonOutput, siteUrl)
 		}
+
 		const feed = new Feed(feedOptions)
 
 		let feedItems = []
+
 		for (const contentType of options.contentTypes) {
 			const collection = store.getCollection(contentType)._collection
 			if (!collection.data || !collection.data.length) continue
@@ -76,14 +83,17 @@ module.exports = function (api, options) {
 				feedItem.link = feedItem.id
 				return feedItem
 			})
+
 			feedItems.push(...items)
 		}
+
 		feedItems.sort((a, b) => {
 			const aDate = moment(a.date)
 			const bDate = moment(b.date)
 			if (aDate.isSame(bDate)) return 0
 			return aDate.isBefore(bDate) ? 1 : -1
 		})
+
 		if (options.maxItems && feedItems.length > options.maxItems) {
 			feedItems = feedItems.slice(0, options.maxItems)
 		}
@@ -103,10 +113,12 @@ module.exports = function (api, options) {
 			console.log(`Generate RSS feed at ${rssOutput}`)
 			fs.outputFile(path.join(config.outputDir, rssOutput), feed.rss2())
 		}
+
 		if (atomOutput) {
 			console.log(`Generate Atom feed at ${atomOutput}`)
 			fs.outputFile(path.join(config.outputDir, atomOutput), feed.atom1())
 		}
+
 		if (jsonOutput) {
 			console.log(`Generate JSON feed at ${jsonOutput}`)
 			fs.outputFile(path.join(config.outputDir, jsonOutput), feed.json1())
