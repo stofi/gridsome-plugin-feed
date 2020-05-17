@@ -1,6 +1,6 @@
 {
   "name": "@microflash/gridsome-plugin-feed",
-  "version": "1.0.5",
+  "version": "1.0.6",
   "description": "Gridsome plugin to generate RSS, Atom or JSON feeds",
   "main": "index.js",
   "license": "MIT",
@@ -16,6 +16,6 @@
     "feed": "^4.1.0",
     "fs-extra": "^9.0.0",
     "micromatch": "^4.0.2",
-    "moment": "^2.25.1"
+    "moment": "^2.25.3"
   }
 }
