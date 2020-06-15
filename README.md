@@ -1,4 +1,7 @@
-# @microflash/gridsome-plugin-feed
+# @microflash/gridsome-plugin-feed 
+
+[![npm](https://img.shields.io/npm/v/@microflash/gridsome-plugin-feed)](https://www.npmjs.com/package/@microflash/gridsome-plugin-feed)
+[![license](https://img.shields.io/npm/l/@microflash/gridsome-plugin-feed)](./LICENSE.md)
 
 Gridsome plugin to generate RSS, Atom or JSON feeds
 
