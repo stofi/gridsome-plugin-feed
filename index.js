@@ -79,8 +79,8 @@ module.exports = (api, options) => {
       // items that may not get included in the feed, but it's build time, so... ¯\_(ツ)_/¯
       const items = collection.data.filter(options.filterNodes).map(node => {
         const feedItem = options.nodeToFeedItem(node)
-        feedItem.id = urlWithBase(pathPrefix + node.path, siteUrl, options.enforceTrailingSlashes)
-        feedItem.link = feedItem.id
+        feedItem.link = feedItem.link || urlWithBase(pathPrefix + node.path, siteUrl, options.enforceTrailingSlashes)
+        feedItem.id = feedItem.link
         return feedItem
       })
 
