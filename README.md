@@ -3,7 +3,7 @@
 [![npm](https://img.shields.io/npm/v/@microflash/gridsome-plugin-feed)](https://www.npmjs.com/package/@microflash/gridsome-plugin-feed)
 [![license](https://img.shields.io/npm/l/@microflash/gridsome-plugin-feed)](./LICENSE.md)
 
-Gridsome plugin to generate RSS, Atom or JSON feeds
+A Gridsome plugin to generate RSS, Atom and JSON feeds
 
 ## Install
 
@@ -15,6 +15,8 @@ npm install @microflash/gridsome-plugin-feed
 ## Usage
 
 ```js
+// gridsome.config.js
+
 module.exports = {
   plugins: [
     {
@@ -75,6 +77,10 @@ module.exports = {
   ]
 }
 ```
+
+## Contribute
+
+Feel free to contribute to the project. Take a look at the [contribution guidelines](./CONTRIBUTING.md) to get started.
 
 ## Credits
 
