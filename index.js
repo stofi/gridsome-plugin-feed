@@ -1,8 +1,8 @@
+const fs = require('fs').promises
 const path = require('path')
 const url = require('url')
-const fs = require('fs-extra')
 const Feed = require('feed').Feed
-const moment = require('moment')
+const dayjs = require('dayjs')
 
 const urlWithBase = (path, base, enforceTrailingSlashes) => {
   if (enforceTrailingSlashes && !path.endsWith('/') && !/\.[a-z]{1,4}$/i.test(path)) {
@@ -25,6 +25,16 @@ const ensureExtension = (path, extension) => {
     return `${path.substring(0, path.length - 1)}${extension}`
   }
   return `${path}${extension}`
+}
+
+const writeFile = (outputDir, outputFile, content) => {
+  fs.mkdir(outputDir, { recursive: true })
+    .then(() => Promise.all([
+      fs.writeFile(path.join(outputDir, outputFile), content),
+    ]))
+    .catch(() => {
+      throw new Error(`Couldn't generate the output feed`)
+    })
 }
 
 module.exports = (api, options) => {
@@ -88,8 +98,8 @@ module.exports = (api, options) => {
     }
 
     feedItems.sort((a, b) => {
-      const aDate = moment(a.date)
-      const bDate = moment(b.date)
+      const aDate = dayjs(a.date)
+      const bDate = dayjs(b.date)
       if (aDate.isSame(bDate)) return 0
       return aDate.isBefore(bDate) ? 1 : -1
     })
@@ -111,17 +121,17 @@ module.exports = (api, options) => {
 
     if (rssOutput) {
       console.log(`Generate RSS feed at ${rssOutput}`)
-      fs.outputFile(path.join(config.outputDir, rssOutput), feed.rss2())
+      writeFile(config.outputDir, rssOutput, feed.rss2())
     }
 
     if (atomOutput) {
       console.log(`Generate Atom feed at ${atomOutput}`)
-      fs.outputFile(path.join(config.outputDir, atomOutput), feed.atom1())
+      writeFile(config.outputDir, rssOutput, feed.atom1())
     }
 
     if (jsonOutput) {
       console.log(`Generate JSON feed at ${jsonOutput}`)
-      fs.outputFile(path.join(config.outputDir, jsonOutput), feed.json1())
+      writeFile(config.outputDir, rssOutput, feed.json1())
     }
   })
 }

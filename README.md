@@ -1,4 +1,4 @@
-# @microflash/gridsome-plugin-feed 
+# Gridsome Feed Plugin 
 
 [![npm](https://img.shields.io/npm/v/@microflash/gridsome-plugin-feed)](https://www.npmjs.com/package/@microflash/gridsome-plugin-feed)
 [![license](https://img.shields.io/npm/l/@microflash/gridsome-plugin-feed)](./LICENSE.md)
