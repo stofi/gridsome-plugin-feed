@@ -126,12 +126,12 @@ module.exports = (api, options) => {
 
     if (atomOutput) {
       console.log(`Generate Atom feed at ${atomOutput}`)
-      writeFile(config.outputDir, rssOutput, feed.atom1())
+      writeFile(config.outputDir, atomOutput, feed.atom1())
     }
 
     if (jsonOutput) {
       console.log(`Generate JSON feed at ${jsonOutput}`)
-      writeFile(config.outputDir, rssOutput, feed.json1())
+      writeFile(config.outputDir, jsonOutput, feed.json1())
     }
   })
 }
