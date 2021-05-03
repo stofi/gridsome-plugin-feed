@@ -81,7 +81,7 @@ module.exports = (api, options) => {
     let feedItems = []
 
     for (const contentType of options.contentTypes) {
-      const { collection } = store.getCollection(contentType)
+      const { collection } = store.getContentType(contentType)
       if (!collection.data || !collection.data.length) continue
       // We're mapping to feed items here instead of after sorting in case the data needs
       // to be massaged into the proper format for a feed item (e.g. if the node has a date
