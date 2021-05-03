@@ -81,14 +81,14 @@ module.exports = (api, options) => {
     let feedItems = []
 
     for (const contentType of options.contentTypes) {
-      const { collection } = store.getContentType(contentType)
+      const { collection } = store.getCollection(contentType)
       if (!collection.data || !collection.data.length) continue
       // We're mapping to feed items here instead of after sorting in case the data needs
       // to be massaged into the proper format for a feed item (e.g. if the node has a date
       // in a field named something other than `date`). This is slower because we process
       // items that may not get included in the feed, but it's build time, so... ¯\_(ツ)_/¯
       const items = collection.data.filter(options.filterNodes).map(node => {
-        const feedItem = options.nodeToFeedItem(node)
+        const feedItem = options.nodeToFeedItem(node, store)
         feedItem.link = feedItem.link || urlWithBase(pathPrefix + node.path, siteUrl, options.enforceTrailingSlashes)
         feedItem.id = feedItem.link
         return feedItem
