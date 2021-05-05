@@ -65,7 +65,7 @@ const defaultFeedOptions = {
 }
 
 
-const generateFeed = (api, options) => {
+const generateFeed = (api, options, config) => {
   if (!options.contentTypes || !options.contentTypes.length) {
     throw new Error(
       'Missing required field `options.contentTypes` for `@microflash/gridsome-plugin-feed` plugin in gridsome.config.js'
@@ -195,7 +195,7 @@ module.exports = (api, options) => {
     }
     if (options.feeds)
       options.feeds.forEach((feedOptions) => {
-        generateFeed(api, feedOptions)
+        generateFeed(api, feedOptions, config)
       })
   })
 }
