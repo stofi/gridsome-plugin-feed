@@ -66,6 +66,12 @@ const defaultFeedOptions = {
 
 
 const generateFeed = (api, options) => {
+  if (!options.contentTypes || !options.contentTypes.length) {
+    throw new Error(
+      'Missing required field `options.contentTypes` for `@microflash/gridsome-plugin-feed` plugin in gridsome.config.js'
+    )
+  }
+
   options = {
     ...defaultFeedOptions,
     options,
@@ -183,11 +189,6 @@ module.exports = (api, options) => {
       throw new Error('Missing required field `siteUrl` in gridsome.config.js')
     }
 
-    if (!options.contentTypes || !options.contentTypes.length) {
-      throw new Error(
-        'Missing required field `options.contentTypes` for `@microflash/gridsome-plugin-feed` plugin in gridsome.config.js'
-      )
-    }
     const uniqueFeeds = [...new Set(options.feeds.map(({ name }) => name))]
     if (options.feeds.length != uniqueFeeds.length) {
       throw new Error('Each feed has to have a unique name')
