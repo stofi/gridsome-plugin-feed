@@ -43,15 +43,15 @@ const defaultFeedOptions = {
   feedOptions: {},
   rss: {
     enabled: true,
-    output: '/feed.xml',
+    output: '/[name].xml',
   },
   atom: {
     enabled: false,
-    output: '/feed.atom',
+    output: '/[name].atom',
   },
   json: {
     enabled: false,
-    output: '/feed.json',
+    output: '/[name].json',
   },
   maxItems: 25,
   htmlFields: ['description', 'content'],
@@ -74,8 +74,24 @@ const generateFeed = (api, options, config) => {
 
   options = {
     ...defaultFeedOptions,
-    options,
+    ...options,
   }
+  options = {
+    ...options,
+    rss: {
+      enabled: options.rss.enabled,
+      output: options.rss.output.replace('[name]', options.name),
+    },
+    atom: {
+      enabled: options.atom.enabled,
+      output: options.atom.output.replace('[name]', options.name),
+    },
+    json: {
+      enabled: options.json.enabled,
+      output: options.json.output.replace('[name]', options.name),
+    },
+  }
+
   const store = api._app.store
   const pathPrefix = config.pathPrefix !== '/' ? config.pathPrefix : ''
   const siteUrl = config.siteUrl
@@ -93,13 +109,13 @@ const generateFeed = (api, options, config) => {
     feedLinks: {},
   }
   const rssOutput = options.rss.enabled
-    ? ensureExtension(`${options.name}/${options.rss.output}`, '.xml')
+    ? ensureExtension(options.rss.output, '.xml')
     : null
   const atomOutput = options.atom.enabled
-    ? ensureExtension(`${options.name}/${options.atom.output}`, '.atom')
+    ? ensureExtension(options.atom.output, '.atom')
     : null
   const jsonOutput = options.json.enabled
-    ? ensureExtension(`${options.name}/${options.json.output}`, '.json')
+    ? ensureExtension(options.json.output, '.json')
     : null
 
   if (rssOutput) {
