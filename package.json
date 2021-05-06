@@ -13,7 +13,8 @@
     "atom"
   ],
   "dependencies": {
-    "feed": "^4.2.1",
-    "dayjs": "^1.9.8"
+    "dayjs": "^1.9.8",
+    "feed": "stofi/feed",
+    "git": "^0.1.5"
   }
 }
